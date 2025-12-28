@@ -1,6 +1,6 @@
 #!/bin/bash
 # deploy.sh - Deploy a NeoFeeder stack
-# Usage: ./deploy.sh <instance-name> <web-port> <ws-port>
+# Usage: ./deploy.sh <instance-name> <web-port> <webservice-port>
 # Example: ./deploy.sh stiembo 8100 3003
 
 set -e
@@ -50,7 +50,7 @@ echo "=== Deploying NeoFeeder Stack ==="
 echo "Stack Name: ${STACK_NAME}"
 echo "Instance: ${INSTANCE_NAME}"
 echo "Web Port: ${APP_PORT}"
-echo "WebSocket Port: ${WS_PORT}"
+echo "Webservice Port: ${WS_PORT}"
 echo "Image: ${IMAGE_NAME}"
 echo ""
 

@@ -47,7 +47,7 @@ services:
         protocol: tcp
         mode: host
       - target: 3003
-        published: ${WS_PORT:-3003}
+        published: ${WS_PORT:-3003}   # Webservice port
         protocol: tcp
         mode: host
     tty: true

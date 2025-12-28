@@ -68,7 +68,7 @@ docker stack rm neofeeder-stiembo
 
 ## Port Allocation
 
-| Instance | Web Port | WebSocket Port |
+| Instance | Web Port | Webservice Port |
 |----------|----------|----------------|
 | stiembo  | 8100     | 3003           |
 | iikplmn  | 8200     | 3103           |
