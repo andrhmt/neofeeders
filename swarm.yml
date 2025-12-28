@@ -13,27 +13,17 @@ services:
   # PostgreSQL Database Service
   db-pddikti:
     image: postgres:12
-    command: [
-      "postgres",
-      "-c", "port=54333",
-      "-c", "logging_collector=on",
-      "-c", "log_directory=/var/log/postgresql",
-      "-c", "log_filename=postgresql-%Y-%m-%d_%H%M.log",
-      "-c", "log_statement=all",
-      "-c", "log_timezone=Asia/Jakarta",
-      "-c", "log_rotation_age=1d",
-      "-c", "log_rotation_size=15MB",
-      "-c", "log_line_prefix=%t [%p] %q%d@%u, %h, %a, %l "
-    ]
+    command: ["postgres", "-c", "port=54333"]
     tty: true
     environment:
       TZ: "Asia/Jakarta"
+      POSTGRES_HOST_AUTH_METHOD: "trust"
     volumes:
       - ${APP_PATH_HOST}/pgsql/data:/var/lib/postgresql/data
-      - ${APP_PATH_HOST}/pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
-      - ${APP_PATH_HOST}/logs/postgresql:/var/log/postgresql
     networks:
-      - app-network
+      app-network:
+        aliases:
+          - db-pddikti
     deploy:
       restart_policy:
         condition: any
@@ -56,7 +46,7 @@ services:
       SERVICE_NAME: "app"
       SERVICE_TAGS: "1.0.5"
       PGHOST: "db-pddikti"
-      PGPORT: 54333
+      PGPORT: "54333"
     volumes:
       - ${APP_PATH_HOST}/prefill_pddikti:/prefill_pddikti
       - ${APP_PATH_HOST}/logs/supervisor:/var/log/supervisor
