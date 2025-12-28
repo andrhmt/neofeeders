@@ -1,0 +1,43 @@
+FROM ubuntu:20.04
+
+LABEL maintainer="NeoFeeder Swarm"
+
+# Set timezone
+RUN apt-get update && \
+    apt-get install -yq tzdata && \
+    ln -fs /usr/share/zoneinfo/Asia/Jakarta /etc/localtime && \
+    dpkg-reconfigure -f noninteractive tzdata
+
+# Install dependencies
+RUN apt-get update \
+    && apt-get install -y --allow-unauthenticated \
+        curl \
+        p7zip-full \
+        nginx \
+        supervisor \
+        inetutils-ping \
+        logrotate
+
+# Install Node.js 12
+RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - && apt-get install -yq nodejs
+
+# Clear cache
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Create www user
+RUN groupadd -g 1000 www
+RUN useradd -u 1000 -ms /bin/bash -g www www
+
+# Copy application files (these come from the source directory)
+COPY nginx/nginx.conf /etc/nginx/nginx.conf
+COPY app /app
+COPY etc/supervisor/supervisord.conf /etc/supervisor/supervisord.conf
+
+# Set permissions
+RUN chown -R www:www /app
+
+# Create log directories
+RUN mkdir -p /var/log/supervisor
+RUN chown www:www /var/log/supervisor
+
+CMD ["/usr/bin/supervisord"]
