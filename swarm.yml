@@ -32,14 +32,8 @@ services:
   app-pddikti:
     image: ${APP_IMAGE:-neofeeder:latest}
     ports:
-      - target: 8100
-        published: ${APP_PORT:-8100}
-        protocol: tcp
-        mode: host
-      - target: 3003
-        published: ${WS_PORT:-3003}   # Webservice port
-        protocol: tcp
-        mode: host
+      - "${APP_PORT:-8100}:8100"
+      - "${WS_PORT:-3003}:3003"
     tty: true
     environment:
       TZ: "Asia/Jakarta"
